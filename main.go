@@ -24,13 +24,14 @@ func main() {
 
 	productController := controller.NewProductController(productUsecase)
 
+	server.GET("/products", productController.GetProducts)
+	server.POST("/product", productController.CreateProduct)
+
 	server.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
-
-	server.GET("/products", productController.GetProducts)
 
 	server.Run(":2306")
 }
