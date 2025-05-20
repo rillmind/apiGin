@@ -25,6 +25,7 @@ func main() {
 	productController := controller.NewProductController(productUsecase)
 
 	server.GET("/products", productController.GetProducts)
+	server.GET("/product/:productID", productController.GetProductByID)
 	server.POST("/product", productController.CreateProduct)
 
 	server.GET("/ping", func(ctx *gin.Context) {

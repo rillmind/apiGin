@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rillmind/apiGin/model"
@@ -45,4 +46,43 @@ func (p *productController) CreateProduct(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, insertedProduct)
+}
+
+func (p *productController) GetProductByID(ctx *gin.Context) {
+
+	id := ctx.Param("productID")
+
+	if id == "" {
+		response := model.Response{
+			Message: "ID do produto não pode ser nulo",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	productID, err := strconv.Atoi(id)
+
+	if err != nil {
+		response := model.Response{
+			Message: "ID precisa ser um número",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	product, err := p.ProductUsecase.GetProductByID(productID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	if product == nil {
+		response := model.Response{
+			Message: "Produto não encontrado",
+		}
+		ctx.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, product)
 }

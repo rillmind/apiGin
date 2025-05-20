@@ -72,3 +72,32 @@ func (pr *ProductRepository) CreateProduct(product model.Product) (int, error) {
 	query.Close()
 	return id, nil
 }
+
+func (pr *ProductRepository) GetProductByID(productID int) (*model.Product, error) {
+	var product model.Product
+
+	query, err := pr.connection.Prepare("select * from product where id = $1")
+
+	if err != nil {
+		fmt.Print(err)
+		return nil, err
+	}
+
+	err = query.QueryRow(productID).Scan(
+		&product.ID,
+		&product.Name,
+		&product.Price,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	query.Close()
+
+	return &product, nil
+}
