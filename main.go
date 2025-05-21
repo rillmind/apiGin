@@ -27,6 +27,7 @@ func main() {
 	server.GET("/products", productController.GetProducts)
 	server.GET("/product/:productID", productController.GetProductByID)
 	server.POST("/product", productController.CreateProduct)
+	server.DELETE("/product/:productID", productController.DeleteProductByID)
 
 	server.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{

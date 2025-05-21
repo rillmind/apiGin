@@ -39,3 +39,13 @@ func (pu *ProductUsecase) GetProductByID(productID int) (*model.Product, error) 
 
 	return product, nil
 }
+
+func (pu *ProductUsecase) DeleteProductByID(productID int) (int64, error) {
+	product, err := pu.repository.DeleteProductByID(productID)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return product, err
+}
