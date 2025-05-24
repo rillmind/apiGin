@@ -7,7 +7,7 @@ import (
 	"github.com/rillmind/apiGin/controller"
 	"github.com/rillmind/apiGin/db"
 	"github.com/rillmind/apiGin/repository"
-	"github.com/rillmind/apiGin/usecase"
+	"github.com/rillmind/apiGin/service"
 )
 
 func main() {
@@ -18,11 +18,15 @@ func main() {
 		panic(err)
 	}
 
+	userRepository := repository.NewUserRepository(dbConnection)
+	userService := service.NewUserService(userRepository)
+	userController := controller.NewUserController(userService)
+
+	server.GET("/users", userController.GetUsers)
+
 	productRepository := repository.NewProductRepository(dbConnection)
-
-	productUsecase := usecase.NewProductUsecase(productRepository)
-
-	productController := controller.NewProductController(productUsecase)
+	productService := service.NewProductService(productRepository)
+	productController := controller.NewProductController(productService)
 
 	server.GET("/products", productController.GetProducts)
 	server.GET("/product/:productID", productController.GetProductByID)

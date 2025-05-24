@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   go_app:
     container_name: go_app
@@ -13,7 +11,7 @@ services:
     container_name: go_db
     image: postgres:12
     environment:
-      POTGRES_DB: postgres
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
     ports:

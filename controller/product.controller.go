@@ -6,21 +6,21 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rillmind/apiGin/model"
-	"github.com/rillmind/apiGin/usecase"
+	"github.com/rillmind/apiGin/service"
 )
 
 type productController struct {
-	usecase.ProductUsecase
+	service.ProductService
 }
 
-func NewProductController(usecase usecase.ProductUsecase) productController {
+func NewProductController(service service.ProductService) productController {
 	return productController{
-		ProductUsecase: usecase,
+		ProductService: service,
 	}
 }
 
 func (p *productController) GetProducts(ctx *gin.Context) {
-	products, err := p.ProductUsecase.GetProducts()
+	products, err := p.ProductService.GetProducts()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -38,7 +38,7 @@ func (p *productController) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	insertedProduct, err := p.ProductUsecase.CreateProduct(product)
+	insertedProduct, err := p.ProductService.CreateProduct(product)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
@@ -69,7 +69,7 @@ func (p *productController) GetProductByID(ctx *gin.Context) {
 		return
 	}
 
-	product, err := p.ProductUsecase.GetProductByID(productID)
+	product, err := p.ProductService.GetProductByID(productID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
@@ -107,7 +107,7 @@ func (p *productController) DeleteProductByID(ctx *gin.Context) {
 		return
 	}
 
-	product, err := p.ProductUsecase.DeleteProductByID(productID)
+	product, err := p.ProductService.DeleteProductByID(productID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return

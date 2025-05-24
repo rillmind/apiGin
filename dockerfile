@@ -6,6 +6,6 @@ COPY . .
 
 EXPOSE 8000
 
-RUN go build -o main
+RUN go build -o main ./cmd
 
-CMD [ "./main" ]
+CMD ["./main"]
