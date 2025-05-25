@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rillmind/apiGin/model"
@@ -52,4 +53,43 @@ func (uc *UserController) CreateUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, userResp)
+}
+
+func (uc *UserController) GetUserByID(ctx *gin.Context) {
+	id := ctx.Param("userID")
+
+	if id == "" {
+		response := model.Response{
+			Message: "ID do produto não pode ser nulo",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	userID, err := strconv.Atoi(id)
+
+	if err != nil {
+		response := model.Response{
+			Message: "ID precisa ser um número",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	user, err := uc.UserService.GetUserByID(userID)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	if user == nil {
+		response := model.Response{
+			Message: "Usuário não encontrado",
+		}
+		ctx.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
 }

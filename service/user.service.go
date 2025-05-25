@@ -31,5 +31,14 @@ func (us *UserService) CreateUser(user model.User) (model.User, error) {
 	return user, nil
 }
 
-// func (us *UserService) x(user model.User) (model.User, error) {}
+func (us *UserService) GetUserByID(userID int) (*model.User, error) {
+	user, err := us.repository.GetUserByID(userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 // func (us *UserService) x(user model.User) (model.User, error) {}
