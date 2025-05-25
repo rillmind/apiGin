@@ -70,6 +70,7 @@ func (pr *ProductRepository) CreateProduct(product model.Product) (int, error) {
 	}
 
 	query.Close()
+
 	return id, nil
 }
 

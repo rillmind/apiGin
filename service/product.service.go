@@ -15,12 +15,12 @@ func NewProductService(repo repository.ProductRepository) ProductService {
 	}
 }
 
-func (pu *ProductService) GetProducts() ([]model.Product, error) {
-	return pu.repository.GetProducts()
+func (ps *ProductService) GetProducts() ([]model.Product, error) {
+	return ps.repository.GetProducts()
 }
 
-func (pu *ProductService) CreateProduct(product model.Product) (model.Product, error) {
-	productID, err := pu.repository.CreateProduct(product)
+func (ps *ProductService) CreateProduct(product model.Product) (model.Product, error) {
+	productID, err := ps.repository.CreateProduct(product)
 	if err != nil {
 		return model.Product{}, err
 	}
@@ -30,8 +30,8 @@ func (pu *ProductService) CreateProduct(product model.Product) (model.Product, e
 	return product, nil
 }
 
-func (pu *ProductService) GetProductByID(productID int) (*model.Product, error) {
-	product, err := pu.repository.GetProductByID(productID)
+func (ps *ProductService) GetProductByID(productID int) (*model.Product, error) {
+	product, err := ps.repository.GetProductByID(productID)
 
 	if err != nil {
 		return nil, err
@@ -40,8 +40,8 @@ func (pu *ProductService) GetProductByID(productID int) (*model.Product, error) 
 	return product, nil
 }
 
-func (pu *ProductService) DeleteProductByID(productID int) (int64, error) {
-	product, err := pu.repository.DeleteProductByID(productID)
+func (ps *ProductService) DeleteProductByID(productID int) (int64, error) {
+	product, err := ps.repository.DeleteProductByID(productID)
 
 	if err != nil {
 		return 0, err

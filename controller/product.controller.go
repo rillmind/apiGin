@@ -19,8 +19,8 @@ func NewProductController(service service.ProductService) productController {
 	}
 }
 
-func (p *productController) GetProducts(ctx *gin.Context) {
-	products, err := p.ProductService.GetProducts()
+func (pc *productController) GetProducts(ctx *gin.Context) {
+	products, err := pc.ProductService.GetProducts()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -28,7 +28,7 @@ func (p *productController) GetProducts(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, products)
 }
 
-func (p *productController) CreateProduct(ctx *gin.Context) {
+func (pc *productController) CreateProduct(ctx *gin.Context) {
 	var product model.Product
 
 	err := ctx.BindJSON(&product)
@@ -38,7 +38,7 @@ func (p *productController) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	insertedProduct, err := p.ProductService.CreateProduct(product)
+	insertedProduct, err := pc.ProductService.CreateProduct(product)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
@@ -48,7 +48,7 @@ func (p *productController) CreateProduct(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, insertedProduct)
 }
 
-func (p *productController) GetProductByID(ctx *gin.Context) {
+func (pc *productController) GetProductByID(ctx *gin.Context) {
 	id := ctx.Param("productID")
 
 	if id == "" {
@@ -69,7 +69,7 @@ func (p *productController) GetProductByID(ctx *gin.Context) {
 		return
 	}
 
-	product, err := p.ProductService.GetProductByID(productID)
+	product, err := pc.ProductService.GetProductByID(productID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
@@ -86,7 +86,7 @@ func (p *productController) GetProductByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, product)
 }
 
-func (p *productController) DeleteProductByID(ctx *gin.Context) {
+func (pc *productController) DeleteProductByID(ctx *gin.Context) {
 	id := ctx.Param("productID")
 
 	if id == "" {
@@ -107,7 +107,7 @@ func (p *productController) DeleteProductByID(ctx *gin.Context) {
 		return
 	}
 
-	product, err := p.ProductService.DeleteProductByID(productID)
+	product, err := pc.ProductService.DeleteProductByID(productID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return

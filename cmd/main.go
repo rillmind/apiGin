@@ -22,11 +22,12 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	userController := controller.NewUserController(userService)
 
-	server.GET("/users", userController.GetUsers)
-
 	productRepository := repository.NewProductRepository(dbConnection)
 	productService := service.NewProductService(productRepository)
 	productController := controller.NewProductController(productService)
+
+	server.GET("/users", userController.GetUsers)
+	server.POST("/user", userController.CreateUser)
 
 	server.GET("/products", productController.GetProducts)
 	server.GET("/product/:productID", productController.GetProductByID)
