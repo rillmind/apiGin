@@ -1,12 +1,11 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/rillmind/apiGin/controller"
 	"github.com/rillmind/apiGin/db"
 	"github.com/rillmind/apiGin/repository"
+	"github.com/rillmind/apiGin/router"
 	"github.com/rillmind/apiGin/service"
 )
 
@@ -22,23 +21,13 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	userController := controller.NewUserController(userService)
 
-	server.GET("/users", userController.GetUsers)
-	server.POST("/user", userController.CreateUser)
+	router.RegisterUserRoutes(server, &userController)
 
 	productRepository := repository.NewProductRepository(dbConnection)
 	productService := service.NewProductService(productRepository)
 	productController := controller.NewProductController(productService)
 
-	server.GET("/products", productController.GetProducts)
-	server.GET("/product/:productID", productController.GetProductByID)
-	server.POST("/product", productController.CreateProduct)
-	server.DELETE("/product/:productID", productController.DeleteProductByID)
-
-	server.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	router.RegisterProductRoutes(server, &productController)
 
 	server.Run(":2306")
 }

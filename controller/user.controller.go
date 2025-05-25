@@ -8,17 +8,17 @@ import (
 	"github.com/rillmind/apiGin/service"
 )
 
-type userController struct {
+type UserController struct {
 	service.UserService
 }
 
-func NewUserController(service service.UserService) userController {
-	return userController{
+func NewUserController(service service.UserService) UserController {
+	return UserController{
 		UserService: service,
 	}
 }
 
-func (uc *userController) GetUsers(ctx *gin.Context) {
+func (uc *UserController) GetUsers(ctx *gin.Context) {
 	users, err := uc.UserService.GetUsers()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
@@ -27,7 +27,7 @@ func (uc *userController) GetUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, users)
 }
 
-func (uc *userController) CreateUser(ctx *gin.Context) {
+func (uc *UserController) CreateUser(ctx *gin.Context) {
 	var user model.User
 
 	err := ctx.BindJSON(&user)
