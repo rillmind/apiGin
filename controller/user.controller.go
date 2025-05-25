@@ -44,5 +44,12 @@ func (uc *userController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, insertedUser)
+	userResp := model.UserResponse{
+		ID:       insertedUser.ID,
+		Name:     insertedUser.Name,
+		Username: insertedUser.Username,
+		Email:    insertedUser.Email,
+	}
+
+	ctx.JSON(http.StatusCreated, userResp)
 }

@@ -20,7 +20,7 @@ func (us *UserService) GetUsers() ([]model.User, error) {
 }
 
 func (us *UserService) CreateUser(user model.User) (model.User, error) {
-	userID, err := us.repository.CreatUsers(user)
+	userID, err := us.repository.CreatUser(user)
 
 	if err != nil {
 		return model.User{}, err
