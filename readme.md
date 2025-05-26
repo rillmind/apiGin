@@ -31,6 +31,10 @@ docker build -t goapi .
 docker compose up -d
 ```
 
+Confira se se o host condiz com como você deseja rodar a aplicação.
+se for rodar com docker compose use 'host = docker', mas se for rodar
+a api localmente use 'host = local' em [conn.go](./db/conn.go).
+
 ## Rotas
 
 Você pode conferir as rotas para teste no diretorio router:

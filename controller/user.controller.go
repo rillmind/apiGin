@@ -93,3 +93,42 @@ func (uc *UserController) GetUserByID(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, user)
 }
+
+func (uc *UserController) DeleteUserByID(ctx *gin.Context) {
+	id := ctx.Param("userID")
+
+	if id == "" {
+		response := model.Response{
+			Message: "ID do produto não pode ser nulo",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	userID, err := strconv.Atoi(id)
+
+	if err != nil {
+		response := model.Response{
+			Message: "ID precisa ser um número",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	user, err := uc.UserService.DeleteUserByID(userID)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	if user == 0 {
+		response := model.Response{
+			Message: "Usuário não encontrado",
+		}
+		ctx.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
+}

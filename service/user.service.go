@@ -41,4 +41,12 @@ func (us *UserService) GetUserByID(userID int) (*model.User, error) {
 	return user, nil
 }
 
-// func (us *UserService) x(user model.User) (model.User, error) {}
+func (us *UserService) DeleteUserByID(userID int) (int64, error) {
+	user, err := us.repository.DeleteUserByID(userID)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return user, err
+}

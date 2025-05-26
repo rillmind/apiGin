@@ -121,4 +121,32 @@ func (ur *UserRepository) GetUserByID(userID int) (*model.User, error) {
 	return &user, nil
 }
 
-func (ur *UserRepository) DeleteUserByID() {}
+func (ur *UserRepository) DeleteUserByID(userID int) (int64, error) {
+	query, err := ur.connection.Prepare(`
+		delete from "user"
+		where id = $1
+	`)
+
+	if err != nil {
+		fmt.Print(err)
+		return 0, nil
+	}
+
+	defer query.Close()
+
+	result, err := query.Exec(userID)
+
+	if err != nil {
+		fmt.Print(err)
+		return 0, nil
+	}
+
+	rowsAffected, err := result.RowsAffected()
+
+	if err != nil {
+		fmt.Print(err)
+		return 0, nil
+	}
+
+	return rowsAffected, nil
+}
