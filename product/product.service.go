@@ -1,28 +1,23 @@
-package service
-
-import (
-	"github.com/rillmind/apiGin/model"
-	"github.com/rillmind/apiGin/repository"
-)
+package product
 
 type ProductService struct {
-	repository repository.ProductRepository
+	repository ProductRepository
 }
 
-func NewProductService(repo repository.ProductRepository) ProductService {
+func NewProductService(repo ProductRepository) ProductService {
 	return ProductService{
 		repository: repo,
 	}
 }
 
-func (ps *ProductService) GetProducts() ([]model.Product, error) {
+func (ps *ProductService) GetProducts() ([]Product, error) {
 	return ps.repository.GetProducts()
 }
 
-func (ps *ProductService) CreateProduct(product model.Product) (model.Product, error) {
+func (ps *ProductService) CreateProduct(product Product) (Product, error) {
 	productID, err := ps.repository.CreateProduct(product)
 	if err != nil {
-		return model.Product{}, err
+		return Product{}, err
 	}
 
 	product.ID = productID
@@ -30,7 +25,7 @@ func (ps *ProductService) CreateProduct(product model.Product) (model.Product, e
 	return product, nil
 }
 
-func (ps *ProductService) GetProductByID(productID int) (*model.Product, error) {
+func (ps *ProductService) GetProductByID(productID int) (*Product, error) {
 	product, err := ps.repository.GetProductByID(productID)
 
 	if err != nil {

@@ -1,11 +1,8 @@
-package repository
+package user
 
 import (
 	"database/sql"
 	"fmt"
-
-	"github.com/rillmind/apiGin/model"
-	"github.com/rillmind/apiGin/utils"
 )
 
 type UserRepository struct {
@@ -18,16 +15,16 @@ func NewUserRepository(connection *sql.DB) UserRepository {
 	}
 }
 
-func (ur *UserRepository) GetUsers() ([]model.User, error) {
-	var userList []model.User
-	var userObj model.User
+func (ur *UserRepository) GetUsers() ([]User, error) {
+	var userList []User
+	var userObj User
 
 	query := `select * from "user"`
 	rows, err := ur.connection.Query(query)
 
 	if err != nil {
 		fmt.Print(err)
-		return []model.User{}, err
+		return []User{}, err
 	}
 
 	for rows.Next() {
@@ -41,7 +38,7 @@ func (ur *UserRepository) GetUsers() ([]model.User, error) {
 
 		if err != nil {
 			fmt.Print(err)
-			return []model.User{}, err
+			return []User{}, err
 		}
 
 		userList = append(userList, userObj)
@@ -52,7 +49,7 @@ func (ur *UserRepository) GetUsers() ([]model.User, error) {
 	return userList, nil
 }
 
-func (ur *UserRepository) CreatUser(user model.User) (int, error) {
+func (ur *UserRepository) CreatUser(user User) (int, error) {
 	var id int
 
 	query, err := ur.connection.Prepare(`
@@ -66,7 +63,7 @@ func (ur *UserRepository) CreatUser(user model.User) (int, error) {
 		return 0, err
 	}
 
-	hashedPass, err := utils.HashPassword(user.Password)
+	hashedPass, err := HashPassword(user.Password)
 
 	if err != nil {
 		fmt.Print(err)
@@ -85,8 +82,8 @@ func (ur *UserRepository) CreatUser(user model.User) (int, error) {
 	return id, nil
 }
 
-func (ur *UserRepository) GetUserByID(userID int) (*model.User, error) {
-	var user model.User
+func (ur *UserRepository) GetUserByID(userID int) (*User, error) {
+	var user User
 
 	query, err := ur.connection.Prepare(`
 		select id, user_name, user_username, user_email, user_password

@@ -1,19 +1,18 @@
-package controller
+package user
 
 import (
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rillmind/apiGin/model"
-	"github.com/rillmind/apiGin/service"
+	"github.com/rillmind/apiGin/response"
 )
 
 type UserController struct {
-	service.UserService
+	UserService
 }
 
-func NewUserController(service service.UserService) UserController {
+func NewUserController(service UserService) UserController {
 	return UserController{
 		UserService: service,
 	}
@@ -29,7 +28,7 @@ func (uc *UserController) GetUsers(ctx *gin.Context) {
 }
 
 func (uc *UserController) CreateUser(ctx *gin.Context) {
-	var user model.User
+	var user User
 
 	err := ctx.BindJSON(&user)
 
@@ -45,7 +44,7 @@ func (uc *UserController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	userResp := model.UserResponse{
+	userResp := UserResponse{
 		ID:       insertedUser.ID,
 		Name:     insertedUser.Name,
 		Username: insertedUser.Username,
@@ -59,7 +58,7 @@ func (uc *UserController) GetUserByID(ctx *gin.Context) {
 	id := ctx.Param("userID")
 
 	if id == "" {
-		response := model.Response{
+		response := response.New{
 			Message: "ID do produto não pode ser nulo",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -69,7 +68,7 @@ func (uc *UserController) GetUserByID(ctx *gin.Context) {
 	userID, err := strconv.Atoi(id)
 
 	if err != nil {
-		response := model.Response{
+		response := response.New{
 			Message: "ID precisa ser um número",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -84,7 +83,7 @@ func (uc *UserController) GetUserByID(ctx *gin.Context) {
 	}
 
 	if user == nil {
-		response := model.Response{
+		response := response.New{
 			Message: "Usuário não encontrado",
 		}
 		ctx.JSON(http.StatusNotFound, response)
@@ -98,7 +97,7 @@ func (uc *UserController) DeleteUserByID(ctx *gin.Context) {
 	id := ctx.Param("userID")
 
 	if id == "" {
-		response := model.Response{
+		response := response.New{
 			Message: "ID do produto não pode ser nulo",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -108,7 +107,7 @@ func (uc *UserController) DeleteUserByID(ctx *gin.Context) {
 	userID, err := strconv.Atoi(id)
 
 	if err != nil {
-		response := model.Response{
+		response := response.New{
 			Message: "ID precisa ser um número",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -123,7 +122,7 @@ func (uc *UserController) DeleteUserByID(ctx *gin.Context) {
 	}
 
 	if user == 0 {
-		response := model.Response{
+		response := response.New{
 			Message: "Usuário não encontrado",
 		}
 		ctx.JSON(http.StatusNotFound, response)

@@ -1,29 +1,24 @@
-package service
-
-import (
-	"github.com/rillmind/apiGin/model"
-	"github.com/rillmind/apiGin/repository"
-)
+package user
 
 type UserService struct {
-	repository repository.UserRepository
+	repository UserRepository
 }
 
-func NewUserService(repo repository.UserRepository) UserService {
+func NewUserService(repo UserRepository) UserService {
 	return UserService{
 		repository: repo,
 	}
 }
 
-func (us *UserService) GetUsers() ([]model.User, error) {
+func (us *UserService) GetUsers() ([]User, error) {
 	return us.repository.GetUsers()
 }
 
-func (us *UserService) CreateUser(user model.User) (model.User, error) {
+func (us *UserService) CreateUser(user User) (User, error) {
 	userID, err := us.repository.CreatUser(user)
 
 	if err != nil {
-		return model.User{}, err
+		return User{}, err
 	}
 
 	user.ID = userID
@@ -31,7 +26,7 @@ func (us *UserService) CreateUser(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func (us *UserService) GetUserByID(userID int) (*model.User, error) {
+func (us *UserService) GetUserByID(userID int) (*User, error) {
 	user, err := us.repository.GetUserByID(userID)
 
 	if err != nil {

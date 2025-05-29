@@ -1,10 +1,8 @@
-package repository
+package product
 
 import (
 	"database/sql"
 	"fmt"
-
-	"github.com/rillmind/apiGin/model"
 )
 
 type ProductRepository struct {
@@ -17,15 +15,15 @@ func NewProductRepository(connection *sql.DB) ProductRepository {
 	}
 }
 
-func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
-	var productList []model.Product
-	var productObj model.Product
+func (pr *ProductRepository) GetProducts() ([]Product, error) {
+	var productList []Product
+	var productObj Product
 
 	query := "select id, product_name, price from product"
 	rows, err := pr.connection.Query(query)
 	if err != nil {
 		fmt.Print(err)
-		return []model.Product{}, err
+		return []Product{}, err
 	}
 
 	for rows.Next() {
@@ -37,7 +35,7 @@ func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
 
 		if err != nil {
 			fmt.Println(err)
-			return []model.Product{}, err
+			return []Product{}, err
 		}
 
 		productList = append(productList, productObj)
@@ -48,7 +46,7 @@ func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
 	return productList, nil
 }
 
-func (pr *ProductRepository) CreateProduct(product model.Product) (int, error) {
+func (pr *ProductRepository) CreateProduct(product Product) (int, error) {
 	var id int
 
 	query, err := pr.connection.Prepare(
@@ -74,8 +72,8 @@ func (pr *ProductRepository) CreateProduct(product model.Product) (int, error) {
 	return id, nil
 }
 
-func (pr *ProductRepository) GetProductByID(productID int) (*model.Product, error) {
-	var product model.Product
+func (pr *ProductRepository) GetProductByID(productID int) (*Product, error) {
+	var product Product
 
 	query, err := pr.connection.Prepare("select * from product where id = $1")
 

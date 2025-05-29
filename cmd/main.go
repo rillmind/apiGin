@@ -1,12 +1,11 @@
 package main
 
 import (
+	"github.com/rillmind/apiGin/product"
+	"github.com/rillmind/apiGin/user"
+
 	"github.com/gin-gonic/gin"
-	"github.com/rillmind/apiGin/controller"
 	"github.com/rillmind/apiGin/db"
-	"github.com/rillmind/apiGin/repository"
-	"github.com/rillmind/apiGin/router"
-	"github.com/rillmind/apiGin/service"
 )
 
 func main() {
@@ -17,17 +16,17 @@ func main() {
 		panic(err)
 	}
 
-	userRepository := repository.NewUserRepository(dbConnection)
-	userService := service.NewUserService(userRepository)
-	userController := controller.NewUserController(userService)
+	userRepository := user.NewUserRepository(dbConnection)
+	userService := user.NewUserService(userRepository)
+	userController := user.NewUserController(userService)
 
-	router.RegisterUserRoutes(server, &userController)
+	user.RegisterUserRoutes(server, &userController)
 
-	productRepository := repository.NewProductRepository(dbConnection)
-	productService := service.NewProductService(productRepository)
-	productController := controller.NewProductController(productService)
+	productRepository := product.NewProductRepository(dbConnection)
+	productService := product.NewProductService(productRepository)
+	productController := product.NewProductController(productService)
 
-	router.RegisterProductRoutes(server, &productController)
+	product.RegisterProductRoutes(server, &productController)
 
 	server.Run(":2306")
 }

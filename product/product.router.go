@@ -1,11 +1,10 @@
-package router
+package product
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rillmind/apiGin/controller"
 )
 
-func RegisterProductRoutes(server *gin.Engine, pc *controller.ProductController) {
+func RegisterProductRoutes(server *gin.Engine, pc *ProductController) {
 	server.GET("/products", pc.GetProducts)
 	server.GET("/product/:productID", pc.GetProductByID)
 	server.POST("/product", pc.CreateProduct)

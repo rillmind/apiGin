@@ -1,4 +1,4 @@
-package service
+package jwt
 
 import (
 	"fmt"
@@ -57,4 +57,20 @@ func (js *jwtService) ValidateToken(token string) bool {
 	})
 
 	return err == nil
+}
+
+// feito pelo copilot para eu estudar depois
+func (js *jwtService) GetRoleFromToken(tokenString string) (string, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &Claim{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(js.secretKey), nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	if claims, ok := token.Claims.(*Claim); ok && token.Valid {
+		return claims.Role, nil
+	}
+
+	return "", fmt.Errorf("invalid token or claims")
 }

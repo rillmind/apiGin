@@ -1,19 +1,18 @@
-package controller
+package product
 
 import (
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rillmind/apiGin/model"
-	"github.com/rillmind/apiGin/service"
+	"github.com/rillmind/apiGin/response"
 )
 
 type ProductController struct {
-	service.ProductService
+	ProductService
 }
 
-func NewProductController(service service.ProductService) ProductController {
+func NewProductController(service ProductService) ProductController {
 	return ProductController{
 		ProductService: service,
 	}
@@ -29,7 +28,7 @@ func (pc *ProductController) GetProducts(ctx *gin.Context) {
 }
 
 func (pc *ProductController) CreateProduct(ctx *gin.Context) {
-	var product model.Product
+	var product Product
 
 	err := ctx.BindJSON(&product)
 
@@ -52,7 +51,7 @@ func (pc *ProductController) GetProductByID(ctx *gin.Context) {
 	id := ctx.Param("productID")
 
 	if id == "" {
-		response := model.Response{
+		response := response.New{
 			Message: "ID do produto não pode ser nulo",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -62,7 +61,7 @@ func (pc *ProductController) GetProductByID(ctx *gin.Context) {
 	productID, err := strconv.Atoi(id)
 
 	if err != nil {
-		response := model.Response{
+		response := response.New{
 			Message: "ID precisa ser um número",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -76,7 +75,7 @@ func (pc *ProductController) GetProductByID(ctx *gin.Context) {
 	}
 
 	if product == nil {
-		response := model.Response{
+		response := response.New{
 			Message: "Produto não encontrado",
 		}
 		ctx.JSON(http.StatusNotFound, response)
@@ -90,7 +89,7 @@ func (pc *ProductController) DeleteProductByID(ctx *gin.Context) {
 	id := ctx.Param("productID")
 
 	if id == "" {
-		response := model.Response{
+		response := response.New{
 			Message: "ID do produto não pode ser nulo",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -100,7 +99,7 @@ func (pc *ProductController) DeleteProductByID(ctx *gin.Context) {
 	productID, err := strconv.Atoi(id)
 
 	if err != nil {
-		response := model.Response{
+		response := response.New{
 			Message: "ID precisa ser um número",
 		}
 		ctx.JSON(http.StatusBadRequest, response)
@@ -114,7 +113,7 @@ func (pc *ProductController) DeleteProductByID(ctx *gin.Context) {
 	}
 
 	if product == 0 {
-		response := model.Response{
+		response := response.New{
 			Message: "Produto não encontrado",
 		}
 		ctx.JSON(http.StatusNotFound, response)
