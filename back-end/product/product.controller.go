@@ -14,12 +14,12 @@ type Controller struct {
 
 func NewController(service Service) Controller {
 	return Controller{
-		ProductService: service,
+		Service: service,
 	}
 }
 
 func (pc *Controller) GetProducts(ctx *gin.Context) {
-	products, err := pc.ProductService.GetProducts()
+	products, err := pc.Service.GetProducts()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -37,7 +37,7 @@ func (pc *Controller) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	insertedProduct, err := pc.ProductService.CreateProduct(product)
+	insertedProduct, err := pc.Service.CreateProduct(product)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
@@ -68,7 +68,7 @@ func (pc *Controller) GetProductByID(ctx *gin.Context) {
 		return
 	}
 
-	product, err := pc.ProductService.GetProductByID(productID)
+	product, err := pc.Service.GetProductByID(productID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
@@ -106,7 +106,7 @@ func (pc *Controller) DeleteProductByID(ctx *gin.Context) {
 		return
 	}
 
-	product, err := pc.ProductService.DeleteProductByID(productID)
+	product, err := pc.Service.DeleteProductByID(productID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
