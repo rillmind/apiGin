@@ -5,17 +5,17 @@ import (
 	"fmt"
 )
 
-type ProductRepository struct {
+type Repository struct {
 	connection *sql.DB
 }
 
-func NewProductRepository(connection *sql.DB) ProductRepository {
-	return ProductRepository{
+func NewRepository(connection *sql.DB) Repository {
+	return Repository{
 		connection: connection,
 	}
 }
 
-func (pr *ProductRepository) GetProducts() ([]Product, error) {
+func (pr *Repository) GetProducts() ([]Product, error) {
 	var productList []Product
 	var productObj Product
 
@@ -46,7 +46,7 @@ func (pr *ProductRepository) GetProducts() ([]Product, error) {
 	return productList, nil
 }
 
-func (pr *ProductRepository) CreateProduct(product Product) (int, error) {
+func (pr *Repository) CreateProduct(product Product) (int, error) {
 	var id int
 
 	query, err := pr.connection.Prepare(
@@ -72,7 +72,7 @@ func (pr *ProductRepository) CreateProduct(product Product) (int, error) {
 	return id, nil
 }
 
-func (pr *ProductRepository) GetProductByID(productID int) (*Product, error) {
+func (pr *Repository) GetProductByID(productID int) (*Product, error) {
 	var product Product
 
 	query, err := pr.connection.Prepare("select * from product where id = $1")
@@ -101,7 +101,7 @@ func (pr *ProductRepository) GetProductByID(productID int) (*Product, error) {
 	return &product, nil
 }
 
-func (pr *ProductRepository) DeleteProductByID(productID int) (int64, error) {
+func (pr *Repository) DeleteProductByID(productID int) (int64, error) {
 	query, err := pr.connection.Prepare("delete from product where id = $1")
 
 	if err != nil {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/rillmind/apiGin/auth"
 	"github.com/rillmind/apiGin/product"
 	"github.com/rillmind/apiGin/user"
 
@@ -11,22 +12,28 @@ import (
 func main() {
 	server := gin.Default()
 
-	dbConnection, err := db.ConnectDB()
+	dbConnection, err := db.Connect()
 	if err != nil {
 		panic(err)
 	}
 
-	userRepository := user.NewUserRepository(dbConnection)
-	userService := user.NewUserService(userRepository)
-	userController := user.NewUserController(userService)
+	authRepository := auth.NewRepository(dbConnection)
+	authServise := auth.NewService(authRepository)
+	authController := auth.NewController(authServise)
 
-	user.RegisterUserRoutes(server, &userController)
+	auth.RegisterRoutes(server, &authController)
 
-	productRepository := product.NewProductRepository(dbConnection)
-	productService := product.NewProductService(productRepository)
-	productController := product.NewProductController(productService)
+	userRepository := user.NewRepository(dbConnection)
+	userService := user.NewService(userRepository)
+	userController := user.NewController(userService)
 
-	product.RegisterProductRoutes(server, &productController)
+	user.RegisterRoutes(server, &userController)
+
+	productRepository := product.NewRepository(dbConnection)
+	productService := product.NewService(productRepository)
+	productController := product.NewController(productService)
+
+	product.RegisterRoutes(server, &productController)
 
 	server.Run(":2306")
 }

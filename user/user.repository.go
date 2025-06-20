@@ -3,28 +3,30 @@ package user
 import (
 	"database/sql"
 	"fmt"
+
+	"github.com/rillmind/apiGin/hash"
 )
 
-type UserRepository struct {
+type Repository struct {
 	connection *sql.DB
 }
 
-func NewUserRepository(connection *sql.DB) UserRepository {
-	return UserRepository{
-		connection: connection,
+func NewRepository(connection *sql.DB) Repository {
+	return Repository{
+		connection,
 	}
 }
 
-func (ur *UserRepository) GetUsers() ([]User, error) {
-	var userList []User
-	var userObj User
+func (ur *Repository) GetUsers() ([]Model, error) {
+	var userList []Model
+	var userObj Model
 
 	query := `select * from "user"`
 	rows, err := ur.connection.Query(query)
 
 	if err != nil {
 		fmt.Print(err)
-		return []User{}, err
+		return []Model{}, err
 	}
 
 	for rows.Next() {
@@ -38,7 +40,7 @@ func (ur *UserRepository) GetUsers() ([]User, error) {
 
 		if err != nil {
 			fmt.Print(err)
-			return []User{}, err
+			return []Model{}, err
 		}
 
 		userList = append(userList, userObj)
@@ -49,7 +51,7 @@ func (ur *UserRepository) GetUsers() ([]User, error) {
 	return userList, nil
 }
 
-func (ur *UserRepository) CreatUser(user User) (int, error) {
+func (ur *Repository) CreatUser(user Model) (int, error) {
 	var id int
 
 	query, err := ur.connection.Prepare(`
@@ -63,7 +65,7 @@ func (ur *UserRepository) CreatUser(user User) (int, error) {
 		return 0, err
 	}
 
-	hashedPass, err := HashPassword(user.Password)
+	hashedPass, err := hash.Password(user.Password)
 
 	if err != nil {
 		fmt.Print(err)
@@ -82,8 +84,8 @@ func (ur *UserRepository) CreatUser(user User) (int, error) {
 	return id, nil
 }
 
-func (ur *UserRepository) GetUserByID(userID int) (*User, error) {
-	var user User
+func (ur *Repository) GetUserByID(userID int) (*Model, error) {
+	var user Model
 
 	query, err := ur.connection.Prepare(`
 		select id, user_name, user_username, user_email, user_password
@@ -118,7 +120,7 @@ func (ur *UserRepository) GetUserByID(userID int) (*User, error) {
 	return &user, nil
 }
 
-func (ur *UserRepository) DeleteUserByID(userID int) (int64, error) {
+func (ur *Repository) DeleteUserByID(userID int) (int64, error) {
 	query, err := ur.connection.Prepare(`
 		delete from "user"
 		where id = $1

@@ -8,17 +8,17 @@ import (
 	"github.com/rillmind/apiGin/response"
 )
 
-type ProductController struct {
-	ProductService
+type Controller struct {
+	Service
 }
 
-func NewProductController(service ProductService) ProductController {
-	return ProductController{
+func NewController(service Service) Controller {
+	return Controller{
 		ProductService: service,
 	}
 }
 
-func (pc *ProductController) GetProducts(ctx *gin.Context) {
+func (pc *Controller) GetProducts(ctx *gin.Context) {
 	products, err := pc.ProductService.GetProducts()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
@@ -27,7 +27,7 @@ func (pc *ProductController) GetProducts(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, products)
 }
 
-func (pc *ProductController) CreateProduct(ctx *gin.Context) {
+func (pc *Controller) CreateProduct(ctx *gin.Context) {
 	var product Product
 
 	err := ctx.BindJSON(&product)
@@ -47,7 +47,7 @@ func (pc *ProductController) CreateProduct(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, insertedProduct)
 }
 
-func (pc *ProductController) GetProductByID(ctx *gin.Context) {
+func (pc *Controller) GetProductByID(ctx *gin.Context) {
 	id := ctx.Param("productID")
 
 	if id == "" {
@@ -85,7 +85,7 @@ func (pc *ProductController) GetProductByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, product)
 }
 
-func (pc *ProductController) DeleteProductByID(ctx *gin.Context) {
+func (pc *Controller) DeleteProductByID(ctx *gin.Context) {
 	id := ctx.Param("productID")
 
 	if id == "" {

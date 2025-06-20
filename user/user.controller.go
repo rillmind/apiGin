@@ -8,18 +8,18 @@ import (
 	"github.com/rillmind/apiGin/response"
 )
 
-type UserController struct {
-	UserService
+type Controller struct {
+	Service
 }
 
-func NewUserController(service UserService) UserController {
-	return UserController{
-		UserService: service,
+func NewController(service Service) Controller {
+	return Controller{
+		Service: service,
 	}
 }
 
-func (uc *UserController) GetUsers(ctx *gin.Context) {
-	users, err := uc.UserService.GetUsers()
+func (uc *Controller) GetUsers(ctx *gin.Context) {
+	users, err := uc.Service.GetUsers()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 	}
@@ -27,8 +27,8 @@ func (uc *UserController) GetUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, users)
 }
 
-func (uc *UserController) CreateUser(ctx *gin.Context) {
-	var user User
+func (uc *Controller) CreateUser(ctx *gin.Context) {
+	var user Model
 
 	err := ctx.BindJSON(&user)
 
@@ -37,14 +37,14 @@ func (uc *UserController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	insertedUser, err := uc.UserService.CreateUser(user)
+	insertedUser, err := uc.Service.CreateUser(user)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
-	userResp := UserResponse{
+	userResp := ModelResponse{
 		ID:       insertedUser.ID,
 		Name:     insertedUser.Name,
 		Username: insertedUser.Username,
@@ -54,7 +54,7 @@ func (uc *UserController) CreateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, userResp)
 }
 
-func (uc *UserController) GetUserByID(ctx *gin.Context) {
+func (uc *Controller) GetUserByID(ctx *gin.Context) {
 	id := ctx.Param("userID")
 
 	if id == "" {
@@ -75,7 +75,7 @@ func (uc *UserController) GetUserByID(ctx *gin.Context) {
 		return
 	}
 
-	user, err := uc.UserService.GetUserByID(userID)
+	user, err := uc.Service.GetUserByID(userID)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
@@ -93,7 +93,7 @@ func (uc *UserController) GetUserByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, user)
 }
 
-func (uc *UserController) DeleteUserByID(ctx *gin.Context) {
+func (uc *Controller) DeleteUserByID(ctx *gin.Context) {
 	id := ctx.Param("userID")
 
 	if id == "" {
@@ -114,7 +114,7 @@ func (uc *UserController) DeleteUserByID(ctx *gin.Context) {
 		return
 	}
 
-	user, err := uc.UserService.DeleteUserByID(userID)
+	user, err := uc.Service.DeleteUserByID(userID)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)

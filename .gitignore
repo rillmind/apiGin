@@ -1,3 +1,5 @@
 tmp/
 .air*
 .vscode
+
+.idea

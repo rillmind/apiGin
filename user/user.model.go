@@ -1,6 +1,6 @@
 package user
 
-type User struct {
+type Model struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Username string `json:"username"`
@@ -8,7 +8,7 @@ type User struct {
 	Password string `json:"password"`
 }
 
-type UserResponse struct {
+type ModelResponse struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Username string `json:"username"`

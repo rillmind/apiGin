@@ -1,24 +1,24 @@
 package user
 
-type UserService struct {
-	repository UserRepository
+type Service struct {
+	repository Repository
 }
 
-func NewUserService(repo UserRepository) UserService {
-	return UserService{
+func NewService(repo Repository) Service {
+	return Service{
 		repository: repo,
 	}
 }
 
-func (us *UserService) GetUsers() ([]User, error) {
+func (us *Service) GetUsers() ([]Model, error) {
 	return us.repository.GetUsers()
 }
 
-func (us *UserService) CreateUser(user User) (User, error) {
+func (us *Service) CreateUser(user Model) (Model, error) {
 	userID, err := us.repository.CreatUser(user)
 
 	if err != nil {
-		return User{}, err
+		return Model{}, err
 	}
 
 	user.ID = userID
@@ -26,7 +26,7 @@ func (us *UserService) CreateUser(user User) (User, error) {
 	return user, nil
 }
 
-func (us *UserService) GetUserByID(userID int) (*User, error) {
+func (us *Service) GetUserByID(userID int) (*Model, error) {
 	user, err := us.repository.GetUserByID(userID)
 
 	if err != nil {
@@ -36,7 +36,7 @@ func (us *UserService) GetUserByID(userID int) (*User, error) {
 	return user, nil
 }
 
-func (us *UserService) DeleteUserByID(userID int) (int64, error) {
+func (us *Service) DeleteUserByID(userID int) (int64, error) {
 	user, err := us.repository.DeleteUserByID(userID)
 
 	if err != nil {
