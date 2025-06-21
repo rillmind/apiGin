@@ -1,0 +1,81 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+  width: 100vw;
+
+  color: var(--mocha-text);
+  background-color: var(--mocha-base);
+}
+
+.main .loginBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 15%;
+  height: 25%;
+  min-height: 250px;
+  width: 18%;
+  min-width: 300px;
+  padding: 1.5%;
+  border-radius: 0.8em;
+
+  background-color: var(--mocha-surface0);
+}
+
+.main .loginBox .login,
+.main .loginBox .password {
+  display: flex;
+  flex-direction: column;
+
+  width: 95%;
+
+  gap: 20%;
+}
+
+.main .loginBox .login label,
+.main .loginBox .password label {
+  width: 90%;
+  font-size: 1.3em;
+}
+
+.main .loginBox .login input,
+.main .loginBox .password input {
+  padding: 0.4em;
+  font-size: 1.5em;
+  border-radius: 0.3em;
+
+  border: none;
+
+  color: var(--mocha-text);
+  background-color: var(--mocha-mantle);
+}
+
+.main .loginBox .login input:focus,
+.main .loginBox .password input:focus {
+  outline: 2px solid var(--mocha-mauve);
+}
+
+.main .loginBox .buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main .loginBox .buttons a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 4vh;
+  min-height: 40px;
+  width: 5vw;
+  min-width: 80px;
+  border-radius: 0.5em;
+
+  background-color: var(--mocha-mauve);
+}
